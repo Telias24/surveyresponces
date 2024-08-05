@@ -1,0 +1,32 @@
+var sheetName = 'Sheet1'; // Name of the sheet where data will be stored
+
+function doGet(e) {
+  return ContentService.createTextOutput("This script is used to collect form responses.");
+}
+
+function doPost(e) {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+
+  try {
+    var doc = SpreadsheetApp.openById('1pnDOW9m4PxIw5d0oPA19QIbSA6OBk6vp0ggpiczCvRw'); // Replace with your spreadsheet ID
+    var sheet = doc.getSheetByName(sheetName);
+
+    var data = JSON.parse(e.postData.contents);
+    var values = [new Date()];
+
+    for (var key in data) {
+      values.push(data[key]);
+    }
+
+    sheet.appendRow(values);
+
+    return ContentService.createTextOutput(JSON.stringify({ 'result': 'success', 'row': values }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (e) {
+    return ContentService.createTextOutput(JSON.stringify({ 'result': 'error', 'error': e }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } finally {
+    lock.releaseLock();
+  }
+}
