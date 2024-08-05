@@ -1,32 +1,190 @@
-var sheetName = 'Sheet1'; // Name of the sheet where data will be stored
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milestone Satisfaction Survey</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .scale {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 10px;
+        }
+        .scale label {
+            width: 40px;
+            text-align: center;
+            color: #555;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Milestone Satisfaction Survey (Day 7 and Day 14)</h1>
+        
+        <!-- Question 1 -->
+        <div class="question">
+            <label for="q1">1. How satisfied are you with the content delivered so far? (Scale of 1-10)</label>
+            <div class="scale">
+                <input type="radio" name="q1" value="1"> 1
+                <input type="radio" name="q1" value="2"> 2
+                <input type="radio" name="q1" value="3"> 3
+                <input type="radio" name="q1" value="4"> 4
+                <input type="radio" name="q1" value="5"> 5
+                <input type="radio" name="q1" value="6"> 6
+                <input type="radio" name="q1" value="7"> 7
+                <input type="radio" name="q1" value="8"> 8
+                <input type="radio" name="q1" value="9"> 9
+                <input type="radio" name="q1" value="10"> 10
+            </div>
+        </div>
 
-function doGet(e) {
-  return ContentService.createTextOutput("This script is used to collect form responses.");
-}
+        <!-- Question 2 -->
+        <div class="question">
+            <label for="q2">2. Have you noticed any changes in your mindset or confidence levels?</label>
+            <select id="q2" name="q2">
+                <option value="Significant Improvement">Significant Improvement</option>
+                <option value="Some Improvement">Some Improvement</option>
+                <option value="No Change">No Change</option>
+                <option value="Decline">Decline</option>
+            </select>
+        </div>
 
-function doPost(e) {
-  var lock = LockService.getScriptLock();
-  lock.waitLock(10000);
+        <!-- Question 3 -->
+        <div class="question">
+            <label for="q3">3. Are the exercises and workshops meeting your expectations? (Scale of 1-10)</label>
+            <div class="scale">
+                <input type="radio" name="q3" value="1"> 1
+                <input type="radio" name="q3" value="2"> 2
+                <input type="radio" name="q3" value="3"> 3
+                <input type="radio" name="q3" value="4"> 4
+                <input type="radio" name="q3" value="5"> 5
+                <input type="radio" name="q3" value="6"> 6
+                <input type="radio" name="q3" value="7"> 7
+                <input type="radio" name="q3" value="8"> 8
+                <input type="radio" name="q3" value="9"> 9
+                <input type="radio" name="q3" value="10"> 10
+            </div>
+        </div>
 
-  try {
-    var doc = SpreadsheetApp.openById('1pnDOW9m4PxIw5d0oPA19QIbSA6OBk6vp0ggpiczCvRw'); // Replace with your spreadsheet ID
-    var sheet = doc.getSheetByName(sheetName);
+        <!-- Question 4 -->
+        <div class="question">
+            <label for="q4">4. Do you feel supported by the community and live sessions? (Scale of 1-10)</label>
+            <div class="scale">
+                <input type="radio" name="q4" value="1"> 1
+                <input type="radio" name="q4" value="2"> 2
+                <input type="radio" name="q4" value="3"> 3
+                <input type="radio" name="q4" value="4"> 4
+                <input type="radio" name="q4" value="5"> 5
+                <input type="radio" name="q4" value="6"> 6
+                <input type="radio" name="q4" value="7"> 7
+                <input type="radio" name="q4" value="8"> 8
+                <input type="radio" name="q4" value="9"> 9
+                <input type="radio" name="q4" value="10"> 10
+            </div>
+        </div>
 
-    var data = JSON.parse(e.postData.contents);
-    var values = [new Date()];
+        <!-- Question 5 -->
+        <div class="question">
+            <label for="q5">5. What have you found most valuable in the first week of the challenge?</label>
+            <select id="q5" name="q5">
+                <option value="Mindset exercises">Mindset exercises</option>
+                <option value="Financial advice">Financial advice</option>
+                <option value="Community support">Community support</option>
+                <option value="Live sessions">Live sessions</option>
+                <option value="Other">Other (please specify):</option>
+            </select>
+            <input type="text" id="q5_other" name="q5_other" placeholder="If other, please specify">
+        </div>
 
-    for (var key in data) {
-      values.push(data[key]);
-    }
+        <!-- Question 6 -->
+        <div class="question">
+            <label for="q6">6. Do you have any suggestions for improving the content or delivery?</label>
+            <select id="q6" name="q6">
+                <option value="More live sessions">More live sessions</option>
+                <option value="Additional resources">Additional resources</option>
+                <option value="Better pacing">Better pacing</option>
+                <option value="More interactive elements">More interactive elements</option>
+                <option value="Other">Other (please specify):</option>
+            </select>
+            <input type="text" id="q6_other" name="q6_other" placeholder="If other, please specify">
+        </div>
 
-    sheet.appendRow(values);
+        <button onclick="submitQuiz()">Submit</button>
+    </div>
 
-    return ContentService.createTextOutput(JSON.stringify({ 'result': 'success', 'row': values }))
-      .setMimeType(ContentService.MimeType.JSON);
-  } catch (e) {
-    return ContentService.createTextOutput(JSON.stringify({ 'result': 'error', 'error': e }))
-      .setMimeType(ContentService.MimeType.JSON);
-  } finally {
-    lock.releaseLock();
-  }
-}
+    <script>
+        function submitQuiz() {
+            const responses = {
+                q1: document.querySelector('input[name="q1"]:checked') ? document.querySelector('input[name="q1"]:checked').value : '',
+                q2: document.getElementById('q2').value,
+                q3: document.querySelector('input[name="q3"]:checked') ? document.querySelector('input[name="q3"]:checked').value : '',
+                q4: document.querySelector('input[name="q4"]:checked') ? document.querySelector('input[name="q4"]:checked').value : '',
+                q5: document.getElementById('q5').value,
+                q5_other: document.getElementById('q5_other').value,
+                q6: document.getElementById('q6').value,
+                q6_other: document.getElementById('q6_other').value,
+            };
+
+            // Sending responses to Google Sheets
+            const scriptURL = 'https://script.google.com/macros/s/YOUR-GOOGLE-SCRIPT-URL/exec'; // Replace with your Google Apps Script URL
+            fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(responses),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.text())
+            .then(result => {
+                alert('Thank you for your feedback!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error submitting your feedback. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html>
