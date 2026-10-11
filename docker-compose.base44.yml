@@ -1,0 +1,28 @@
+# Base44 sandbox runbook for this project.
+#
+# The repo is a single static page: the extension-less HTML file "8424"
+# (Milestone Satisfaction Survey). There is no build step, no backend and no
+# database, so nginx serves the bind-mounted file directly on host port 3000.
+# The file is mounted as index.html, so "/" renders it as HTML.
+# Editing "8424" is picked up immediately -- just reload the page in the preview.
+#
+# Only this one file is mounted on purpose: the repo directory itself is mode
+# 700 on the sandbox host, which nginx's unprivileged worker cannot traverse
+# (a directory bind mount returns 403). The file is world-readable, so mounting
+# it alone works. If this project ever grows extra assets (css/js/images), add
+# them here as further read-only volume entries.
+services:
+  web:
+    image: nginx:alpine
+    restart: on-failure
+    ports:
+      - "3000:80"
+    volumes:
+      - ./8424:/usr/share/nginx/html/index.html:ro
+    healthcheck:
+      # Probes real content of the served page, not just an open port.
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/ | grep -q 'Milestone Satisfaction Survey'"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
